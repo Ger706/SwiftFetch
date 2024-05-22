@@ -27,6 +27,9 @@ Route::controller(AuthController::class)->group(function () {
 
         #Login
         Route::post('/login','Login');
+
+        #Register As Seller
+        Route::post('/register-seller','RegisterAsSeller');
     });
 
 });
