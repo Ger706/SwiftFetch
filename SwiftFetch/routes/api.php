@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +28,16 @@ Route::controller(AuthController::class)->group(function () {
 
         #Login
         Route::post('/login','Login');
+    });
+
+});
+
+Route::controller(ProductController::class)->group(function () {
+
+    Route::group(['prefix' => 'product'], function () {
+        # Insert Product
+        Route::post('/insertProduct','insertProduct');
+
     });
 
 });
