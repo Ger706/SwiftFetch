@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Mockery\Exception;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,9 @@ class AuthController extends Controller
                 'name',
                 'password',
                 'email',
+                'address'
             ]);
+            $data['balance'] = 0;
             $data['created_at'] = now();
             $user = User::create($data);
         } catch (\Exception $e) {
@@ -40,6 +43,19 @@ class AuthController extends Controller
         } catch (Exception $e) {
             throw $e;
         }
-        return $this->showResponse('Welcome '. $user['name']);
+        return [
+            'user_id' => $user['id'],
+            'name' => $user['name']
+        ];
+    }
+    public function registerAsSeller(Request $req) {
+        try {
+            $data = $req->only([
+                'user_id',
+                'confirmation'
+            ]);
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }
