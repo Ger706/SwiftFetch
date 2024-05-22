@@ -16,8 +16,7 @@ class AuthController extends Controller
             $data = $req->only([
                 'name',
                 'password',
-                'email',
-                'address'
+                'email'
             ]);
             $data['balance'] = 0;
             $data['created_at'] = now();
@@ -55,17 +54,24 @@ class AuthController extends Controller
             DB::beginTransaction();
             $data = $req->only([
                 'user_id',
-                'confirmation'
+                'subscribe'
             ]);
-            $user = User::where('id','=',$data['user_id']);
+            $user = User::find($data['user_id']);
             $userData = $user->first();
-            if ($data['confirmation'] === true && isset($userData)){
-               $user->update(['is_seller' => 1]);
+            if (!isset($userData)){
+                $this->showResponse(1,'No User Found');
             }
+            if ($data['subscribe'] === true && isset($userData)){
+               $user->is_seller = 1;
+            } else if ($data['subscribe'] === false && isset($userData)) {
+                $user->is_seller = 0;
+            }
+            $user->save();
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
         }
+        return $this->showResponse(0,'Successfully Registered as Seller');
     }
 }
