@@ -12,9 +12,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function showResponse($message =  null): JsonResponse
+    public function showResponse($error, $message =  null): JsonResponse
     {
         $response = [
+            'error' => $error,
             'message' => $message,
         ];
 
