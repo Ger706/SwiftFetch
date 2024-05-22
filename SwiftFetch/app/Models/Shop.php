@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Shop extends Model
+{
+    protected $table      = 'shop';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+        'shop_name',
+        'user_id',
+        'password',
+    ];
+}
