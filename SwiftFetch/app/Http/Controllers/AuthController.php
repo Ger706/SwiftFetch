@@ -24,7 +24,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             throw $e;
         }
-        return $this->showResponse('Account '.  $data['name'] . ' Successfully created ');
+        return $this->showResponse(0, 'Account '.  $data['name'] . ' Successfully created ');
     }
 
     public function Login(Request $req){
@@ -48,30 +48,5 @@ class AuthController extends Controller
             'user_id' => $user['id'],
             'name' => $user['name']
         ];
-    }
-    public function RegisterAsSeller(Request $req) {
-        try {
-            DB::beginTransaction();
-            $data = $req->only([
-                'user_id',
-                'subscribe'
-            ]);
-            $user = User::find($data['user_id']);
-            $userData = $user->first();
-            if (!isset($userData)){
-                $this->showResponse(1,'No User Found');
-            }
-            if ($data['subscribe'] === true && isset($userData)){
-               $user->is_seller = 1;
-            } else if ($data['subscribe'] === false && isset($userData)) {
-                $user->is_seller = 0;
-            }
-            $user->save();
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
-        return $this->showResponse(0,'Successfully Registered as Seller');
     }
 }

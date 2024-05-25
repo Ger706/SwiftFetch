@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\SellerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,6 +32,31 @@ Route::controller(AuthController::class)->group(function () {
 
         #Register As Seller
         Route::post('/register-seller','RegisterAsSeller');
+    });
+
+});
+
+# --- Seller
+Route::controller(SellerController::class)->group(function () {
+
+    Route::group(['prefix' => 'seller'], function () {
+        #Register As Seller
+        Route::post('/register-seller','RegisterAsSeller');
+    });
+});
+
+# --- Shop
+Route::controller(Shopcontroller::class)->group(function () {
+
+    Route::group(['prefix' => 'shop'], function () {
+        # Create Shop
+        Route::post('/create-shop','CreateShop');
+
+        # Delete Shop
+        Route::delete('/delete-shop', 'DeleteShop');
+
+        # Find Shop By User Id
+        Route::post('/find-shop-by-id','FindShopByUser');
     });
 
 });
