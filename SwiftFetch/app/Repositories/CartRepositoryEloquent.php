@@ -32,6 +32,7 @@ class CartRepositoryEloquent extends BaseRepository
                 ->first();
             if (isset($existCart)) {
                 $existCart->quantity += $data['quantity'];
+                $existCart->updated_at = now();
                 $existCart->save();
             } else {
                 Cart::create($data);
@@ -46,7 +47,11 @@ class CartRepositoryEloquent extends BaseRepository
     public function DeleteFromCart($data) {
         try {
             DB::beginTransaction();
-            $cart = Cart::find($data['cart_id'])->first();
+            $cart = null;
+            $getCart = Cart::find($data['cart_id']);
+            if (isset($getCart)) {
+                $cart = $getCart->first();
+            }
             if (isset($cart)) {
                 $cart->delete();
                 DB::commit();
@@ -74,7 +79,11 @@ class CartRepositoryEloquent extends BaseRepository
                 return 0;
             }
             foreach($cart as $index => $cartData){
-                $cart[$index]['price'] = Product::getPrice($cartData['product_id']) * $cartData['quantity'];
+                $product = Product::getProduct($cartData['product_id']);
+                $cart[$index]['price'] = $product['price'] * $cartData['quantity'];
+                $cart[$index]['product_name'] = $product['product_name'];
+
+                unset($cart[$index]['created_at'], $cart[$index]['deleted_at'], $cart[$index]['updated_at']);
             }
         } catch (Exception $e) {
             throw $e;

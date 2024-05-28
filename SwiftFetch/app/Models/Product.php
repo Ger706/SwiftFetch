@@ -29,8 +29,8 @@ class Product extends Authenticatable
         'product_name'
     ];
 
-    public function getPrice($productId){
+    public function getProduct($productId){
         $product = self::find($productId);
-        return $product ? $product->price : null;
+        return $product ? $product : null;
     }
 }
