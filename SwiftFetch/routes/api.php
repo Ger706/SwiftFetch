@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,7 +47,7 @@ Route::controller(SellerController::class)->group(function () {
 });
 
 # --- Shop
-Route::controller(Shopcontroller::class)->group(function () {
+Route::controller(ShopController::class)->group(function () {
 
     Route::group(['prefix' => 'shop'], function () {
         # Create Shop
@@ -60,4 +61,21 @@ Route::controller(Shopcontroller::class)->group(function () {
     });
 
 });
+
+# -- Cart
+Route::controller(CartController::class)->group(function () {
+
+    Route::group(['prefix' => 'cart'], function () {
+        # Create Shop
+        Route::post('/create-cart','CreateCart');
+
+        # Delete Shop
+        Route::delete('/delete-cart', 'DeleteCart');
+
+        # Find Shop By User Id
+        Route::get('/get-cart/{userId}','getCart');
+    });
+
+});
+
 
