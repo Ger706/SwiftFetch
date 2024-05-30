@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Product;
 use App\Models\Shop;
 use Illuminate\Support\Facades\DB;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
@@ -63,7 +64,7 @@ class ShopRepositoryEloquent extends BaseRepository
 
     public function FindShopByUser($userId) {
         try {
-            $shop = Shop::where('user_id','=',$userId)->get()->toArray();
+            $shop = Shop::where('user_id','=',$userId)->whereNull('deleted_at')->get()->toArray();
 
             if (!$shop) {
                 return 0;
@@ -72,5 +73,21 @@ class ShopRepositoryEloquent extends BaseRepository
             throw $e;
         }
         return $shop;
+    }
+
+    public function getProductByShop($shopId) {
+        try {
+            $product = Product::where('shop_id','=',$shopId)->whereNull('deleted_at')->get()->toArray();
+
+            if (!$product) {
+                return 0;
+            }
+            foreach($product as $item) {
+                unset($item['created_at'],$item['updated_at'],$item['deleted_at']);
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $product;
     }
 }

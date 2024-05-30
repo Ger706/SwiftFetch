@@ -50,7 +50,7 @@ class CartRepositoryEloquent extends BaseRepository
             $cart = null;
             $getCart = Cart::find($data['cart_id']);
             if (isset($getCart)) {
-                $cart = $getCart->first();
+                $cart = $getCart->whereNull('deleted_at')->first();
             }
             if (isset($cart)) {
                 $cart->delete();
@@ -74,7 +74,7 @@ class CartRepositoryEloquent extends BaseRepository
 
     public function getCartByUser($userId) {
         try {
-            $cart = Cart::where('user_id','=',$userId)->get()->toArray();
+            $cart = Cart::where('user_id','=',$userId)->whereNull('deleted_at')->get()->toArray();
             if (!$cart) {
                 return 0;
             }

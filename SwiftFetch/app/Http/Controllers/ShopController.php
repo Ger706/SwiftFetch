@@ -62,4 +62,17 @@ class ShopController extends Controller
         }
         return $response;
     }
+
+    function getShopProduct($shopId) {
+        try {
+            $response = $this->shopRepository->getProductByShop($shopId);
+
+            if ($response === 0) {
+                return $this->showResponse(1, 'No Product Found');
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $response;
+    }
 }

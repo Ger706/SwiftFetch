@@ -58,6 +58,9 @@ Route::controller(ShopController::class)->group(function () {
 
         # Find Shop By User Id
         Route::post('/find-shop-by-id','FindShopByUser');
+
+        # Get Shop Product
+        Route::get('/get-shop-product/{shopId}', 'getShopProduct');
     });
 
 });
