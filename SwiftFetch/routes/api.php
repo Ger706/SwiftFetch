@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -79,6 +81,16 @@ Route::controller(CartController::class)->group(function () {
         Route::get('/get-cart/{userId}','getCart');
     });
 
+});
+
+# -- Product
+Route::controller(ProductController::class)->group(function() {
+    Route::group(['prefix' => 'product'], function (){
+        # Insert Product
+        Route::post('/insert-product', 'insertProduct');
+
+        Route::delete('/delete-product', 'deleteProduct');
+    });
 });
 
 
