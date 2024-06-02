@@ -48,7 +48,7 @@ class CartRepositoryEloquent extends BaseRepository
         try {
             DB::beginTransaction();
             $cart = null;
-            $getCart = Cart::find($data['cart_id']);
+            $getCart = Cart::where('id','=',$data['cart_id'])->whereNull('deleted_at');
             if (isset($getCart)) {
                 $cart = $getCart->whereNull('deleted_at')->first();
             }
@@ -79,7 +79,7 @@ class CartRepositoryEloquent extends BaseRepository
                 return 0;
             }
             foreach($cart as $index => $cartData){
-                $product = Product::getProduct($cartData['product_id']);
+                $product = Product::getProduct($cartData['product_id'])->first();
                 $cart[$index]['price'] = $product['price'] * $cartData['quantity'];
                 $cart[$index]['product_name'] = $product['product_name'];
 

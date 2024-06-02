@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Repositories\ProductRepositoryEloquent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 
 class ProductController extends Controller
 {
+    public $productRepository;
+    public function __construct(
+        ProductRepositoryEloquent $productRepository
+    )
+    {
+        $this->productRepository = $productRepository;
+    }
+
     public function insertProduct(Request $req){
         try{
             DB::begintransaction();
@@ -28,7 +38,7 @@ class ProductController extends Controller
         {
             throw $e;
         }
-        return $this->showRespone(0, 'Succesfully create a new product');
+        return $this->showResponse(0, 'Succesfully create a new product');
     }
 
     public function deleteProduct(Request $req)
@@ -47,13 +57,43 @@ class ProductController extends Controller
                 DB::commit();
             }
             else{
-                return $this->showResponse(0, 'Product not found');
+                return $this->showResponse(1, 'Product not found');
             }
 
         }catch (\Exception $e)
         {
             throw $e;
         }
-        return $this->showRespone(0, 'Succesfully delete a product');
+        return $this->showResponse(0, 'Succesfully delete a product');
+    }
+
+    public function getRandomProduct() {
+        try {
+            $product = Product::paginate(15)->whereNull('deleted_at')->toArray();
+
+            foreach($product as $index => $item) {
+                unset($product[$index]['created_at'], $product[$index]['deleted_at'], $product[$index]['updated_at']);
+            }
+            shuffle($product);
+            if (count($product) < 1) {
+                return $this->showResponse(1, 'There is no product in the meantime');
+            }
+
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $product;
+    }
+
+    public function getProductDetail($productId){
+        try {
+            $productDetail = $this->productRepository->getDetail($productId);
+            if ($productDetail === 1){
+                return $this->showResponse('There is an error finding the product detail');
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $productDetail;
     }
 }

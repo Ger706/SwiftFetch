@@ -62,7 +62,7 @@ Route::controller(ShopController::class)->group(function () {
         Route::post('/find-shop-by-id','FindShopByUser');
 
         # Get Shop Product
-        Route::get('/get-shop-product/{shopId}', 'getShopProduct');
+        Route::get('/{shopId}', 'getShopProduct');
     });
 
 });
@@ -78,7 +78,7 @@ Route::controller(CartController::class)->group(function () {
         Route::delete('/delete-cart', 'DeleteCart');
 
         # Find Shop By User Id
-        Route::get('/get-cart/{userId}','getCart');
+        Route::get('/{userId}','getCart');
     });
 
 });
@@ -90,6 +90,10 @@ Route::controller(ProductController::class)->group(function() {
         Route::post('/insert-product', 'insertProduct');
 
         Route::delete('/delete-product', 'deleteProduct');
+
+        Route::get('/get-random-product', 'getRandomProduct');
+
+        Route::get('/{productId}','getProductDetail');
     });
 });
 

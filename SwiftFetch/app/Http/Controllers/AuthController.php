@@ -33,8 +33,10 @@ class AuthController extends Controller
                 'email',
                 'password'
             ]);
-            $user = User::where('email','=',$data['email'])->first()->toArray();
-            if($user === null) {
+            $user = User::where('email','=',$data['email'])->first();
+            if ($user) {
+                $user = $user->toArray();
+            } else {
                 return $this->showResponse(1, 'No Account is Registered');
             }
             if($data['password'] !== $user['password']){

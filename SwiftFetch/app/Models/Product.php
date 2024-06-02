@@ -30,7 +30,7 @@ class Product extends Authenticatable
     ];
 
     public function getProduct($productId){
-        $product = self::find($productId);
+        $product = self::where('id','=',$productId)->whereNull('deleted_at');
         return $product ? $product : null;
     }
 }
