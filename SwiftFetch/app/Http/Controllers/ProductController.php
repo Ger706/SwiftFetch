@@ -99,7 +99,7 @@ class ProductController extends Controller
 
     public function getRecommendedProduct(){
         try{
-            $product = Product::paginate(15)->whereNull('deleted_at')->toArray();
+            $product = Product::paginate(8)->whereNull('deleted_at')->toArray();
             foreach($product as $index => $item){
                 if($item['sold'] != 0){
                     $product[$index]['rate'] = $item['quantity'] / $item['sold'] * 100;
