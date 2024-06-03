@@ -93,6 +93,8 @@ Route::controller(ProductController::class)->group(function() {
 
         Route::get('/get-random-product', 'getRandomProduct');
 
+        Route::get('/get-recommended-product', 'getRecommendedProduct');
+
         Route::get('/{productId}','getProductDetail');
     });
 });

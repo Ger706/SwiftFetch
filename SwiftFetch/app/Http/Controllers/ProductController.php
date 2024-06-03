@@ -96,4 +96,23 @@ class ProductController extends Controller
         }
         return $productDetail;
     }
+
+    public function getRecommendedProduct(){
+        try{
+            $product = Product::paginate(15)->whereNull('deleted_at')->toArray();
+            foreach($product as $index => $item){
+                if($item['sold'] != 0){
+                    $product[$index]['rate'] = $item['quantity'] / $item['sold'] * 100;
+                } else {
+                    unset($product[$index]);
+                }
+            }
+            usort($product, function ($a, $b) {
+                return $a['rate'] <=> $b['rate'];
+            });
+        } catch(Exception $e){
+            throw $e;
+        }
+        return $product;
+    }
 }
