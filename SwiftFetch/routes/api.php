@@ -7,6 +7,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,5 +99,15 @@ Route::controller(ProductController::class)->group(function() {
         Route::get('/{productId}','getProductDetail');
     });
 });
+
+Route::controller(ProfileController::class)->group(function() {
+    Route::group(['prefix' => 'profile'], function (){
+
+        Route::get('/{userId}', 'getProfile');
+
+        Route::post('/edit-profile', 'editProfile');
+    });
+});
+
 
 
