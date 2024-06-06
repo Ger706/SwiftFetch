@@ -8,6 +8,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,17 @@ Route::controller(ProfileController::class)->group(function() {
         Route::get('/{userId}', 'getProfile');
 
         Route::post('/edit-profile', 'editProfile');
+    });
+});
+
+Route::controller(ProductTransactionController::class)->group(function() {
+    Route::group(['prefix' => 'transaction'], function (){
+
+        Route::post('/make-transaction', 'makeTransaction');
+
+        Route::get('/get-transaction', 'getTransaction');
+
+        Route::post('/get-bill','getBill');
     });
 });
 

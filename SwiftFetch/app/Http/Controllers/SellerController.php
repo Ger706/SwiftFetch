@@ -37,6 +37,7 @@ class SellerController extends Controller
                 $user->is_seller = 0;
                 $shopId = $this->shopRepository->FindShopByUser($data['user_id']);
                 $this->shopRepository->DeleteShop($shopId[0]['id']);
+                $user->save();
                 DB::commit();
                 return $this->showResponse(0,'Successfully Unregister as Seller');
             }

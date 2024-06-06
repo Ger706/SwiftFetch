@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
-class Shop extends Authenticatable
+class ProductTransaction extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,11 +18,14 @@ class Shop extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $table      = 'shop';
+    protected $table      = 'product_transaction';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'shop_name',
+        'product_id',
+        'quantity',
+        'shop_id',
         'user_id',
-        'address'
+        'payment',
+        'status'
     ];
 }

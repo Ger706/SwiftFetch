@@ -90,4 +90,34 @@ class ShopRepositoryEloquent extends BaseRepository
         }
         return $product;
     }
+
+    public function getShopByProduct($productId) {
+        try {
+            $shop = DB::table('product')->select('product.shop_id')
+            ->where('product.id','=',$productId)
+                ->whereNull('deleted_at')
+                ->get()
+                ->pluck('shop_id');
+            if($shop->isEmpty()){
+                return null;
+            }
+
+        } catch (Exception $e){
+            throw $e;
+        }
+        return $shop;
+    }
+
+    public function getShopInfo($shopId){
+        try{
+            $shop = Shop::where('id','=',$shopId)->whereNull('deleted_at')->get()->toArray();
+            if(count($shop) === 0){
+                return null;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $shop;
+    }
+
 }

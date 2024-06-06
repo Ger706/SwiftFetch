@@ -23,6 +23,7 @@ class ShopController extends Controller
             $data = $req->only([
                 'shop_name',
                 'user_id',
+                'address'
             ]);
             $data['created_at'] = now();
             $response = $this->shopRepository->CreateShop($data);
@@ -75,4 +76,19 @@ class ShopController extends Controller
         }
         return $response;
     }
+
+    function getShopInfo($shopId) {
+
+        try{
+            $response = $this->shopRepository->getShopInfo($shopId);
+
+            if ($response === null){
+                return $this->showResponse(1, 'No Shop Information Found');
+            }
+        } catch (Exception $e){
+            throw $e;
+        }
+        return $response;
+    }
+
 }
