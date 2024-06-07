@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductTransaction;
+use App\Models\Shop;
 use App\Models\User;
 use App\Repositories\ShopRepositoryEloquent;
 use Illuminate\Http\Request;
@@ -35,13 +36,15 @@ class ProductTransactionController extends Controller
                 $param['shop_id'] = $param['shop_id']->first();
 
                 $user = User::find($param['user_id']);
-                $userData = $user->first();
-                $balance = User::where('id','=',$param['user_id'])->get()->toArray()[0]['balance'];
-               if($userData){
-                   if($balance >= $param['payment']){
-                        $user->balance = $balance - $param['payment'];
+               if($user){
+                   if($user->balance >= $param['payment']){
+                        $user->balance = $user->balance - $param['payment'];
                        ProductTransaction::create($param);
                        $user->save();
+
+                       $shop = Product::find($param['product_id']);
+                       $shop->remaining_stock = $shop->remaining_stock - $param['quantity'];
+                       $shop->save();
                    } else {
                        return $this->showResponse(1,'Balance is not enough');
                    }
@@ -112,6 +115,8 @@ class ProductTransactionController extends Controller
                 } else {
                     return $this->showResponse(1,'Failed to get Price');
                 }
+            } else {
+                return $this->showResponse(0,'Failed to get Price');
             }
         } catch(Exception $e) {
             throw $e;
