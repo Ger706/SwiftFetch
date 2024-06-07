@@ -79,7 +79,7 @@ Route::controller(CartController::class)->group(function () {
         # Delete Shop
         Route::delete('/delete-cart', 'DeleteCart');
 
-        # Find Shop By User Id
+        # Find Cart By User Id
         Route::get('/{userId}','getCart');
     });
 
