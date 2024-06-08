@@ -47,11 +47,12 @@ class AuthController extends Controller
         }
         return [
             'error' => 0,
-            'user_id' => $user['id'],
+            'id' => $user['id'],
             'name' => $user['name'],
-            'image' =>$user['image'],
+            'image' =>$user['photo'],
             'balance' =>$user['balance'],
-            'address'=>$user['address']
+            'address'=>$user['address'],
+            'seller'=>$user['is_seller']
         ];
     }
 }
