@@ -67,14 +67,35 @@ class ProductController extends Controller
         return $this->showResponse(0, 'Succesfully delete a product');
     }
 
-    public function getRandomProduct() {
+    public function getRandomProduct(Request $req) {
         try {
-            $product = Product::paginate(15)->whereNull('deleted_at')->toArray();
+            $data = $req->only([
+                'search',
+                'sortBy'
+            ]);
+
+            $product = Product::whereNull('deleted_at');
+
+            $query = $data['search'];
+
+            if(isset($query))
+            {
+                $product = $product->where('product_name', 'LIKE', "%{$query}%");
+            }
+
+            if($data['sortBy'] === "orderAsc") {
+                $product = $product->sortBy('price');
+            } elseif($data['sortBy'] === "orderDesc") {
+                $product = $product->sortByDesc('price');
+            } else {
+                $product = $product->inRandomOrder();
+            }
+
+            $product = $product->paginate(15)->items();
 
             foreach($product as $index => $item) {
                 unset($product[$index]['created_at'], $product[$index]['deleted_at'], $product[$index]['updated_at']);
             }
-            shuffle($product);
             if (count($product) < 1) {
                 return $this->showResponse(1, 'There is no product in the meantime');
             }
