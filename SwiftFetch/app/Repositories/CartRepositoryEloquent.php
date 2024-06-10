@@ -82,6 +82,7 @@ class CartRepositoryEloquent extends BaseRepository
                 $product = Product::getProduct($cartData['product_id'])->first();
                 $cart[$index]['price'] = $product['price'] * $cartData['quantity'];
                 $cart[$index]['product_name'] = $product['product_name'];
+                $cart[$index]['image'] = $product['image'];
 
                 unset($cart[$index]['created_at'], $cart[$index]['deleted_at'], $cart[$index]['updated_at']);
             }

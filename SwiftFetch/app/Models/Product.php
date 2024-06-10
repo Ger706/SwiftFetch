@@ -26,7 +26,8 @@ class Product extends Authenticatable
         'price',
         'shop_id',
         'origin',
-        'product_name'
+        'product_name',
+        'image'
     ];
 
     public function getProduct($productId){
