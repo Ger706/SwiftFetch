@@ -98,7 +98,7 @@ Route::controller(ProductController::class)->group(function() {
 
         Route::delete('/delete-product', 'deleteProduct');
 
-        Route::get('/get-random-product', 'getRandomProduct');
+        Route::post('/get-random-product', 'getRandomProduct');
 
         Route::get('/get-recommended-product', 'getRecommendedProduct');
 

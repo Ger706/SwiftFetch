@@ -82,11 +82,11 @@ class ProductController extends Controller
             {
                 $product = $product->where('product_name', 'LIKE', "%{$query}%");
             }
-
             if($data['sortBy'] === "orderAsc") {
-                $product = $product->sortBy('price');
+
+                $product = $product->orderBy('price');
             } elseif($data['sortBy'] === "orderDesc") {
-                $product = $product->sortByDesc('price');
+                $product = $product->orderByDesc('price');
             } else {
                 $product = $product->inRandomOrder();
             }
