@@ -101,6 +101,8 @@ Route::controller(ProductController::class)->group(function() {
         Route::get('/get-recommended-product', 'getRecommendedProduct');
 
         Route::get('/{productId}','getProductDetail');
+
+        Route::post('/get-price-under','getProductUnder');
     });
 });
 

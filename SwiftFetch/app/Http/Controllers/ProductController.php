@@ -137,19 +137,14 @@ class ProductController extends Controller
         return $product;
     }
 
-    public function getProductUnder(){
+    public function getProductUnder(Request $req){
         try{
-
-            $product = Product::paginate(8)->whereNull('deleted_at')->where('price','<=',100000)->toArray();
-            foreach($product as $index => $item){
-                if($item['sold'] != 0){
-                    $product[$index]['rate'] = $item['quantity'] / $item['sold'] * 100;
-                } else {
-                    unset($product[$index]);
-                }
-            }
+            $param = $req->only(
+                'price'
+            );
+            $product = Product::paginate(8)->whereNull('deleted_at')->where('price','<=',$param['price'])->toArray();
             usort($product, function ($a, $b) {
-                return $a['rate'] <=> $b['rate'];
+                return $a['price'] <=> $b['price'];
             });
         } catch(Exception $e){
             throw $e;
