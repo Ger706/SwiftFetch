@@ -92,4 +92,18 @@ class ShopController extends Controller
         return $response;
     }
 
+    function getShopByProductId($productId) {
+        try {
+            $shopId = $this->shopRepository->getShopByProduct($productId);
+
+            $shop = Shop::find($shopId);
+            if (!isset($shop)) {
+                return null;
+            }
+        } catch (Exception $e){
+            throw $e;
+        }
+        return $shop;
+    }
+
 }

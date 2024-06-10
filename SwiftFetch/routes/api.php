@@ -68,6 +68,8 @@ Route::controller(ShopController::class)->group(function () {
 
         Route::get('/get-shop-info/{shopId}', 'getShopInfo');
 
+        Route::get('/get-shop-by-product/{productId}','getShopByProductId');
+
     });
 
 });
