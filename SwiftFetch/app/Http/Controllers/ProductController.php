@@ -136,4 +136,24 @@ class ProductController extends Controller
         }
         return $product;
     }
+
+    public function getProductUnder(){
+        try{
+
+            $product = Product::paginate(8)->whereNull('deleted_at')->where('price','<=',100000)->toArray();
+            foreach($product as $index => $item){
+                if($item['sold'] != 0){
+                    $product[$index]['rate'] = $item['quantity'] / $item['sold'] * 100;
+                } else {
+                    unset($product[$index]);
+                }
+            }
+            usort($product, function ($a, $b) {
+                return $a['rate'] <=> $b['rate'];
+            });
+        } catch(Exception $e){
+            throw $e;
+        }
+        return $product;
+    }
 }

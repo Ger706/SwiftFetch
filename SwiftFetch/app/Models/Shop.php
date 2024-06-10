@@ -23,6 +23,7 @@ class Shop extends Authenticatable
     protected $fillable = [
         'shop_name',
         'user_id',
-        'address'
+        'address',
+        'image'
     ];
 }

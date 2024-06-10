@@ -23,7 +23,8 @@ class ShopController extends Controller
             $data = $req->only([
                 'shop_name',
                 'user_id',
-                'address'
+                'address',
+                'image'
             ]);
             $data['created_at'] = now();
             $response = $this->shopRepository->CreateShop($data);

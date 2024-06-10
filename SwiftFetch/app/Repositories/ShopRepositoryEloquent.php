@@ -74,6 +74,18 @@ class ShopRepositoryEloquent extends BaseRepository
         }
         return $shop;
     }
+    public function FindShopByShopId($shopId) {
+        try {
+            $shop = Shop::find($shopId)->whereNull('deleted_at');
+
+            if (!$shop) {
+                return 0;
+            }
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $shop;
+    }
 
     public function getProductByShop($shopId) {
         try {
