@@ -52,7 +52,7 @@ class AuthController extends Controller
             'image' =>$user['photo'],
             'balance' =>$user['balance'],
             'address'=>$user['address'],
-            'seller'=>$user['is_seller']
+            'is_seller'=>$user['is_seller']
         ];
     }
 }
