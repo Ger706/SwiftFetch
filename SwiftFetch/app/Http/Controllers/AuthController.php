@@ -20,6 +20,12 @@ class AuthController extends Controller
             ]);
             $data['balance'] = 0;
             $data['created_at'] = now();
+
+            $exist = User::where('email','=',$data['email'])->get()->toArray();
+            if(count($exist) > 0){
+                return $this->showResponse(1,'Account Already Exist');
+            }
+
             User::create($data);
         } catch (\Exception $e) {
             throw $e;

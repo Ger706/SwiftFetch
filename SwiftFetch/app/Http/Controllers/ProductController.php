@@ -74,7 +74,7 @@ class ProductController extends Controller
                 'sortBy'
             ]);
 
-            $product = Product::whereNull('deleted_at');
+            $product = Product::whereNull('deleted_at')->where('remaining_stock','>', 0);
 
             $query = $data['search'];
 
@@ -120,7 +120,7 @@ class ProductController extends Controller
 
     public function getRecommendedProduct(){
         try{
-            $product = Product::paginate(8)->whereNull('deleted_at')->toArray();
+            $product = Product::paginate(8)->whereNull('deleted_at')->where('remaining_stock','>', 0)->toArray();
             foreach($product as $index => $item){
                 if($item['sold'] != 0){
                     $product[$index]['rate'] = $item['quantity'] / $item['sold'] * 100;
@@ -142,7 +142,7 @@ class ProductController extends Controller
             $param = $req->only(
                 'price'
             );
-            $product = Product::paginate(8)->whereNull('deleted_at')->where('price','<=',$param['price'])->toArray();
+            $product = Product::paginate(8)->whereNull('deleted_at')->where('price','<=',$param['price'])->where('remaining_stock','>', 0)->toArray();
             usort($product, function ($a, $b) {
                 return $a['price'] <=> $b['price'];
             });
