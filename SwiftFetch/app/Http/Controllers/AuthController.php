@@ -55,7 +55,7 @@ class AuthController extends Controller
             'error' => 0,
             'id' => $user['id'],
             'name' => $user['name'],
-            'image' =>$user['photo'],
+            'photo' =>$user['photo'],
             'balance' =>$user['balance'],
             'address'=>$user['address'],
             'is_seller'=>$user['is_seller']
