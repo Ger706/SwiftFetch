@@ -32,6 +32,7 @@ class ProductController extends Controller
             ]);
 
             $data['created_at'] = now();
+            $data['remaining_stock'] = $data['quantity'];
 
             Product::create($data);
             DB::commit();
