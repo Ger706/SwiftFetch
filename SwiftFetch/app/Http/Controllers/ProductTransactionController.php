@@ -124,7 +124,9 @@ class ProductTransactionController extends Controller
 
     public function getTransaction($userId){
         try {
-            $transaction = ProductTransaction::where('user_id','=',$userId)->whereNull('deleted_at')->get()->toArray();
+            $transaction = ProductTransaction::where('user_id','=',$userId)->whereNull('deleted_at')
+             ->orderBy('id', 'desc')
+            ->get()->toArray();
             if(count($transaction) < 1){
                 return $this->showResponse(1, "No Transaction made at this point");
             }
@@ -135,7 +137,7 @@ class ProductTransactionController extends Controller
                 $transaction[$index]['shop_name'] = $shop->shop_name;
                 $transaction[$index]['shop_image'] = $shop->image;
                 $transaction[$index]['product_image'] = $product->image;
-
+                $transaction[$index]['remaining'] = $product->remaining_stock;
                 unset($transaction[$index]['created_at'], $transaction[$index]['deleted_at'], $transaction[$index]['updated_at']);
             }
         } catch (Exception $e){
