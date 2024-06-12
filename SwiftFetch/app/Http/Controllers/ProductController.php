@@ -27,7 +27,8 @@ class ProductController extends Controller
                 'shop_id',
                 'detail',
                 'quantity',
-                'origin'
+                'origin',
+                'image'
             ]);
 
             $data['created_at'] = now();
