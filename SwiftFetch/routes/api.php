@@ -70,6 +70,8 @@ Route::controller(ShopController::class)->group(function () {
 
         Route::get('/get-shop-by-product/{productId}','getShopByProductId');
 
+        Route::get('/get-shop-order/{shopId}','getShopOrder');
+
     });
 
 });

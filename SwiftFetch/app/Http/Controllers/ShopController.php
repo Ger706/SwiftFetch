@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\ProductTransaction;
 use App\Models\Shop;
+use App\Models\User;
 use App\Repositories\ShopRepositoryEloquent;
 use Illuminate\Http\Request;
 use Mockery\Exception;
@@ -106,4 +109,31 @@ class ShopController extends Controller
         return $shop;
     }
 
+    function getShopOrder($shopId) {
+        try{
+            $order = ProductTransaction::where('shop_id','=',$shopId)->whereNull('deleted_at')
+                ->orderBy('id', 'desc')
+                ->get()->toArray();
+            if(count($order) < 1){
+                return $this->showResponse(1, "No Transaction made at this point");
+            }
+            foreach ($order as $index => $item) {
+                $product = Product::where('id','=',$item['product_id'])->first();
+                $shop = Shop::where('id','=',$item['shop_id'])->first();
+                $user = User::where('id','=',$item['user_id'])->first();
+                $order[$index]['product_name'] = $product->product_name;
+                $order[$index]['shop_name'] = $shop->shop_name;
+                $order[$index]['shop_image'] = $shop->image;
+                $order[$index]['product_image'] = $product->image;
+                $order[$index]['remaining'] = $product->remaining_stock;
+                $order[$index]['user_name'] = $user->name;
+                $order[$index]['user_image'] = $user->photo;
+
+                unset($order[$index]['created_at'], $order[$index]['deleted_at'], $order[$index]['updated_at']);
+            }
+        } catch (Exception $e){
+            throw $e;
+        }
+        return $order;
+    }
 }
