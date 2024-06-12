@@ -122,7 +122,7 @@ Route::controller(ProductTransactionController::class)->group(function() {
 
         Route::post('/make-transaction', 'makeTransaction');
 
-        Route::get('/get-transaction', 'getTransaction');
+        Route::get('/get-transaction/{userId}', 'getTransaction');
 
         Route::post('/get-bill','getBill');
     });
