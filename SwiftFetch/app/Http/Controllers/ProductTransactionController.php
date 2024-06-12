@@ -20,7 +20,6 @@ class ProductTransactionController extends Controller
     }
     public function makeTransaction(Request $req){
 
-
         try {
             $param = $req->only(
                 'product_id',

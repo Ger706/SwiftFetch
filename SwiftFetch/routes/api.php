@@ -78,11 +78,11 @@ Route::controller(ShopController::class)->group(function () {
 Route::controller(CartController::class)->group(function () {
 
     Route::group(['prefix' => 'cart'], function () {
-        # Create Shop
+        # Create Cart
         Route::post('/create-cart','CreateCart');
 
-        # Delete Shop
-        Route::delete('/delete-cart', 'DeleteCart');
+        # Delete Cart
+        Route::post('/delete-cart', 'DeleteCart');
 
         # Find Cart By User Id
         Route::get('/{userId}','getCart');
