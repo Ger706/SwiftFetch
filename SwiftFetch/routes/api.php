@@ -102,7 +102,7 @@ Route::controller(ProductController::class)->group(function() {
 
         Route::post('/get-random-product', 'getRandomProduct');
 
-        Route::get('/get-recommended-product', 'getRecommendedProduct');
+        Route::post('/get-recommended-product', 'getRecommendedProduct');
 
         Route::get('/{productId}','getProductDetail');
 
@@ -127,6 +127,10 @@ Route::controller(ProductTransactionController::class)->group(function() {
         Route::get('/get-transaction/{userId}', 'getTransaction');
 
         Route::post('/get-bill','getBill');
+
+        Route::post('/change-status','changeStatus');
+
+        Route::post('/cancel-order','cancelOrder');
     });
 });
 

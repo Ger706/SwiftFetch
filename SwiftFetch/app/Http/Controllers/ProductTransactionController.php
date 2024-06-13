@@ -161,22 +161,47 @@ class ProductTransactionController extends Controller
                $transaction->seller_done = 1;
            } else if ($param['status'] === "Done" && $param['seller_done'] === 0) {
                $transaction->status = "Done";
-               $product = ProductTransaction::find($transaction->product_id);
+               $product = Product::find($transaction->product_id);
                $product->sold = $product->sold + $transaction->quantity;
 
                $shop = Shop::find($product->shop_id);
                $user = User::find($shop->user_id);
-
-               $user->balance = $user->balance + $transaction->real_price - ($transaction->real_price * (5/100));
-               $user->save();
                $product->save();
+               $user->save();
+               $user->balance = $user->balance + $transaction->real_price - ($transaction->real_price * (5/100));
            } else {
                $transaction->status = $param['status'];
            }
+
+            $transaction->save();
+
 
         }  catch (Exception $e) {
             throw $e;
         }
         return $this->showResponse(0,"Status Successfully changed");
+    }
+
+    public function cancelOrder(Request $req) {
+        try {
+            $param = $req->only(
+                'transaction_id'
+            );
+            $transaction = ProductTransaction::find($param['transaction_id']);
+            $transaction->status = "Cancelled";
+
+            $user = User::find($transaction->user_id);
+            $user->balance = $user->balance + $transaction->payment;
+            $product = Product::find($transaction->product_id);
+            $product->remaining_stock = $product->remaining_stock + $transaction->quantity;
+
+            $user->save();
+            $transaction->save();
+            $product->save();
+
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return $this->showResponse(1,'Successfully cancelled');
     }
 }

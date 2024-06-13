@@ -73,10 +73,16 @@ class ProductController extends Controller
         try {
             $data = $req->only([
                 'search',
-                'sortBy'
+                'sortBy',
+                'user_id'
             ]);
 
-            $product = Product::whereNull('deleted_at')->where('remaining_stock','>', 0);
+            $product = Product::
+            join('shop','shop.id','=','product.shop_id')
+                ->where('shop.user_id','!=',$data['user_id'])
+                ->select('product.*')
+            ->whereNull('product.deleted_at')
+                ->where('remaining_stock','>', 0);
 
             $query = $data['search'];
 
@@ -120,9 +126,17 @@ class ProductController extends Controller
         return $productDetail;
     }
 
-    public function getRecommendedProduct(){
+    public function getRecommendedProduct(Request $req){
         try{
-            $product = Product::paginate(8)->whereNull('deleted_at')->where('remaining_stock','>', 0)->toArray();
+            $param = $req->only(
+                'user_id'
+            );
+
+            $product = Product::
+            join('shop','shop.id','=','product.shop_id')
+                ->where('shop.user_id','!=',$param['user_id'])
+                ->select('product.*')
+            ->paginate(8)->whereNull('deleted_at')->where('remaining_stock','>', 0)->toArray();
             foreach($product as $index => $item){
                 if($item['sold'] != 0){
                     $product[$index]['rate'] = $item['quantity'] / $item['sold'] * 100;
@@ -142,9 +156,14 @@ class ProductController extends Controller
     public function getProductUnder(Request $req){
         try{
             $param = $req->only(
-                'price'
+                'price',
+                'user_id'
             );
-            $product = Product::paginate(8)->whereNull('deleted_at')->where('price','<=',$param['price'])->where('remaining_stock','>', 0)->toArray();
+            $product = Product::
+            join('shop','shop.id','=','product.shop_id')
+                ->where('shop.user_id','!=',$param['user_id'])
+                ->select('product.*')
+            ->paginate(8)->whereNull('deleted_at')->where('price','<=',$param['price'])->where('remaining_stock','>', 0)->toArray();
             usort($product, function ($a, $b) {
                 return $a['price'] <=> $b['price'];
             });
