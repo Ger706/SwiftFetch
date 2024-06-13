@@ -26,6 +26,8 @@ class ProductTransaction extends Authenticatable
         'shop_id',
         'user_id',
         'payment',
-        'status'
+        'status',
+        'real_price',
+        'seller_done'
     ];
 }

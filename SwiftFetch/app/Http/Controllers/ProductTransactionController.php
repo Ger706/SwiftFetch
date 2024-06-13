@@ -26,6 +26,7 @@ class ProductTransactionController extends Controller
                 'user_id',
                 'quantity',
                 'payment',
+                'real_price'
             );
             $param['status'] = "Pending";
             $param['shop_id'] = $this->shopRepository->getShopByProduct($param['product_id']);
@@ -145,5 +146,37 @@ class ProductTransactionController extends Controller
         }
 
         return $transaction;
+    }
+
+    public function changeStatus(Request $req){
+        try {
+            $param = $req->only(
+                'transaction_id',
+                'status',
+                'seller_done'
+            );
+
+           $transaction =  ProductTransaction::find($param['transaction_id']);
+           if($param['status'] === "Done" && $param['seller_done'] === 1){
+               $transaction->seller_done = 1;
+           } else if ($param['status'] === "Done" && $param['seller_done'] === 0) {
+               $transaction->status = "Done";
+               $product = ProductTransaction::find($transaction->product_id);
+               $product->sold = $product->sold + $transaction->quantity;
+
+               $shop = Shop::find($product->shop_id);
+               $user = User::find($shop->user_id);
+
+               $user->balance = $user->balance + $transaction->real_price - ($transaction->real_price * (5/100));
+               $user->save();
+               $product->save();
+           } else {
+               $transaction->status = $param['status'];
+           }
+
+        }  catch (Exception $e) {
+            throw $e;
+        }
+        return $this->showResponse(0,"Status Successfully changed");
     }
 }
