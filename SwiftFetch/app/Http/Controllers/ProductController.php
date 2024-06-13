@@ -51,11 +51,12 @@ class ProductController extends Controller
                 'product_id'
             ]);
 
-            $productData = Product::where('id', $data['product_id'])->first();
+            $productData = Product::find($data['product_id']);
 
             if(isset($productData))
             {
-                $productData->delete();
+                $productData->deleted_at = now();
+                $productData->save();
                 DB::commit();
             }
             else{

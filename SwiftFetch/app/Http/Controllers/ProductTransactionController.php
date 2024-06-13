@@ -163,12 +163,11 @@ class ProductTransactionController extends Controller
                $transaction->status = "Done";
                $product = Product::find($transaction->product_id);
                $product->sold = $product->sold + $transaction->quantity;
-
                $shop = Shop::find($product->shop_id);
                $user = User::find($shop->user_id);
+               $user->balance = $user->balance + $transaction->real_price - ($transaction->real_price * (5/100));
                $product->save();
                $user->save();
-               $user->balance = $user->balance + $transaction->real_price - ($transaction->real_price * (5/100));
            } else {
                $transaction->status = $param['status'];
            }
