@@ -44,18 +44,50 @@ class ProductController extends Controller
     }
 
     public function deleteProduct(Request $req)
+{
+    DB::beginTransaction();
+    try{
+        $data = $req->only([
+            'product_id'
+        ]);
+
+        $productData = Product::find($data['product_id']);
+
+        if(isset($productData))
+        {
+            $productData->deleted_at = now();
+            $productData->save();
+            DB::commit();
+        }
+        else{
+            return $this->showResponse(1, 'Product not found');
+        }
+
+    }catch (\Exception $e)
+    {
+        throw $e;
+    }
+    return $this->showResponse(0, 'Succesfully delete a product');
+}
+
+    public function editProduct(Request $req)
     {
         DB::beginTransaction();
         try{
             $data = $req->only([
-                'product_id'
+                'product_id',
+                'product_name',
+                'price',
+                'remaining_stock',
+                'detail',
+                'image'
             ]);
 
             $productData = Product::find($data['product_id']);
 
             if(isset($productData))
             {
-                $productData->deleted_at = now();
+                $productData->fill($data);
                 $productData->save();
                 DB::commit();
             }
@@ -67,7 +99,7 @@ class ProductController extends Controller
         {
             throw $e;
         }
-        return $this->showResponse(0, 'Succesfully delete a product');
+        return $this->showResponse(0, 'Succesfully edited a product');
     }
 
     public function getRandomProduct(Request $req) {

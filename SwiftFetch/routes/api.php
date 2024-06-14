@@ -100,6 +100,8 @@ Route::controller(ProductController::class)->group(function() {
 
         Route::post('/delete-product', 'deleteProduct');
 
+        Route::post('/edit-product', 'editProduct');
+
         Route::post('/get-random-product', 'getRandomProduct');
 
         Route::post('/get-recommended-product', 'getRecommendedProduct');
