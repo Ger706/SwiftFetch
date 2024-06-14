@@ -37,6 +37,11 @@ Route::controller(AuthController::class)->group(function () {
 
         #Register As Seller
         Route::post('/register-seller','RegisterAsSeller');
+
+        #Change Password
+        Route::post('/change-password','changePassword');
+
+        Route::post('/top-up','topUpBalance');
     });
 
 });

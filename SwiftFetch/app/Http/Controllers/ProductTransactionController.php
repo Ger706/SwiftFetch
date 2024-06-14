@@ -26,7 +26,8 @@ class ProductTransactionController extends Controller
                 'user_id',
                 'quantity',
                 'payment',
-                'real_price'
+                'real_price',
+                'address'
             );
             $param['status'] = "Pending";
             $param['shop_id'] = $this->shopRepository->getShopByProduct($param['product_id']);

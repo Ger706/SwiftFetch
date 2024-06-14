@@ -28,6 +28,7 @@ class ProductTransaction extends Authenticatable
         'payment',
         'status',
         'real_price',
-        'seller_done'
+        'seller_done',
+        'address'
     ];
 }
