@@ -27,7 +27,8 @@ class ShopController extends Controller
                 'shop_name',
                 'user_id',
                 'address',
-                'image'
+                'image',
+                'description'
             ]);
             $data['created_at'] = now();
             $response = $this->shopRepository->CreateShop($data);

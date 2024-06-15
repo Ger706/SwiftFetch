@@ -32,7 +32,7 @@ class ShopRepositoryEloquent extends BaseRepository
                 Shop::create($data);
             } else {
                 DB::rollBack();
-
+                return 0;
             }
             DB::commit();
         } catch (Exception $e) {

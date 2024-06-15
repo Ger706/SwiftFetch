@@ -24,6 +24,7 @@ class Shop extends Authenticatable
         'shop_name',
         'user_id',
         'address',
-        'image'
+        'image',
+        'description'
     ];
 }
